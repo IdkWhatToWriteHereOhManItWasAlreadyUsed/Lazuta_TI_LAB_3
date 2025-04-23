@@ -92,31 +92,26 @@ bool is_primitive_root(int g, int p, const vector<int>& factors) {
 
 bool is_prime(int n, int k = 5) 
 {
-    if (n <= 1 || n == 4) return false;
-    if (n <= 3) return true;
+    if ((n & 1) == 0) return n == 2;
+    if (n < 9) return n > 1; // 3, 5 è 7.
 
-    int d = n - 1;
-    while (d % 2 == 0)
-        d /= 2;
+    int32_t s = ctz(n - 1);
+    int32_t t = (n - 1) >> s;
 
-    for (int i = 0; i < k; i++) {
-        int a = 2 + rand() % (n - 4);
-        int x = pow_mod(a, d, n);
+    int32_t primes[3] = { 2, 3, 5 };
 
-        if (x == 1 || x == n - 1)
-            continue;
+    for (int32_t a : primes) {
+        int32_t x = pow_mod(a, t, n);
 
-        bool composite = true;
-        for (int r = 1; r < d; r *= 2) {
-            x = pow_mod(x, 2, n);
-            if (x == n - 1) {
-                composite = false;
-                break;
-            }
+        if (x == 1) continue;
+
+        for (int i = 1; x != n - 1; i++) {
+            if (i == s) return false;
+
+            x = (x * x) % n;
+
+            if (x == 1) return false;
         }
-
-        if (composite)
-            return false;
     }
     return true;
 }
