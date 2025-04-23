@@ -57,8 +57,8 @@ vector<int> prime_factors(int n) {
 }
 
 // быстрое возведение в степень по модулю
-int pow_mod(int a, int b, int mod) {
-    int res = 1;
+int pow_mod(long long a, long long b, long long mod) {
+    long long res = 1;
     a %= mod;
     while (b > 0) {
         if (b % 2 == 1) res = (1LL * res * a) % mod;

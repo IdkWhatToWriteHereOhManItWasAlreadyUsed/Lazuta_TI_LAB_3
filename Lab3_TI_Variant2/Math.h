@@ -18,7 +18,7 @@ bool is_prime(int n, int k = 5);
 std::vector<int> prime_factors(int n);
 
 // Ѕыстрое возведение в степень по модулю
-int pow_mod(int a, int b, int mod);
+int pow_mod(long long a, long long b, long long mod);
 
 // ѕроверка, €вл€етс€ ли число первообразным корнем
 bool is_primitive_root(int g, int p, const std::vector<int>& factors);
