@@ -70,6 +70,8 @@ namespace $safeprojectname$
 	private: System::Windows::Forms::RadioButton^ rbDoEncryption;
 	private: System::Windows::Forms::RadioButton^ rbDoDecryption;
 	private: System::Windows::Forms::ProgressBar^ progressBar1;
+	private: System::Windows::Forms::Label^ label3;
+	private: System::Windows::Forms::Label^ lblAmount;
 
 
 	protected:
@@ -105,6 +107,8 @@ namespace $safeprojectname$
 				this->rbDoEncryption = (gcnew System::Windows::Forms::RadioButton());
 				this->rbDoDecryption = (gcnew System::Windows::Forms::RadioButton());
 				this->progressBar1 = (gcnew System::Windows::Forms::ProgressBar());
+				this->label3 = (gcnew System::Windows::Forms::Label());
+				this->lblAmount = (gcnew System::Windows::Forms::Label());
 				this->menuStrip1->SuspendLayout();
 				this->SuspendLayout();
 				// 
@@ -240,7 +244,7 @@ namespace $safeprojectname$
 				// 
 				this->открытьToolStripMenuItem->Name = L"открытьToolStripMenuItem";
 				this->открытьToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::O));
-				this->открытьToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+				this->открытьToolStripMenuItem->Size = System::Drawing::Size(173, 22);
 				this->открытьToolStripMenuItem->Text = L"Открыть";
 				this->открытьToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::открытьToolStripMenuItem_Click);
 				// 
@@ -248,7 +252,7 @@ namespace $safeprojectname$
 				// 
 				this->сохранитьToolStripMenuItem->Name = L"сохранитьToolStripMenuItem";
 				this->сохранитьToolStripMenuItem->ShortcutKeys = static_cast<System::Windows::Forms::Keys>((System::Windows::Forms::Keys::Control | System::Windows::Forms::Keys::S));
-				this->сохранитьToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+				this->сохранитьToolStripMenuItem->Size = System::Drawing::Size(173, 22);
 				this->сохранитьToolStripMenuItem->Text = L"Сохранить";
 				this->сохранитьToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::сохранитьToolStripMenuItem_Click);
 				// 
@@ -355,12 +359,33 @@ namespace $safeprojectname$
 				this->progressBar1->Size = System::Drawing::Size(1357, 28);
 				this->progressBar1->TabIndex = 22;
 				// 
+				// label3
+				// 
+				this->label3->AutoSize = true;
+				this->label3->ForeColor = System::Drawing::SystemColors::ButtonFace;
+				this->label3->Location = System::Drawing::Point(157, 118);
+				this->label3->Name = L"label3";
+				this->label3->Size = System::Drawing::Size(158, 13);
+				this->label3->TabIndex = 23;
+				this->label3->Text = L"Всего первообразных корней";
+				// 
+				// lblAmount
+				// 
+				this->lblAmount->AutoSize = true;
+				this->lblAmount->ForeColor = System::Drawing::SystemColors::ButtonFace;
+				this->lblAmount->Location = System::Drawing::Point(321, 118);
+				this->lblAmount->Name = L"lblAmount";
+				this->lblAmount->Size = System::Drawing::Size(0, 13);
+				this->lblAmount->TabIndex = 24;
+				// 
 				// MyForm
 				// 
 				this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 				this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 				this->BackColor = System::Drawing::Color::Indigo;
 				this->ClientSize = System::Drawing::Size(1357, 663);
+				this->Controls->Add(this->lblAmount);
+				this->Controls->Add(this->label3);
 				this->Controls->Add(this->progressBar1);
 				this->Controls->Add(this->rbDoDecryption);
 				this->Controls->Add(this->rbDoEncryption);
@@ -451,6 +476,8 @@ namespace $safeprojectname$
 			int plainNum = getRandomPrime(256, 999);
 			PTextBox->Text = ConvertString(std::to_string(plainNum));
 			std::vector<int> roots = find_primitive_roots(plainNum);
+			lblAmount->Text = roots.size().ToString();
+			GComboBox->Items->Clear();
 			for(int root: roots)
 			{
 				GComboBox->Items->Add(root.ToString());
@@ -465,6 +492,7 @@ namespace $safeprojectname$
 		if (is_prime(num))
 		{
 			std::vector<int> roots = find_primitive_roots(num);
+			lblAmount->Text = roots.size().ToString();
 			for (int root : roots)
 			{
 				GComboBox->Items->Add(root.ToString());
@@ -639,7 +667,7 @@ private: System::Void XTextBox_TextChanged(System::Object^ sender, System::Event
 					int g = ConvertToPositiveNumber(GComboBox->SelectedItem->ToString());
 					if (g)
 					{
-						if (inMessage.size())
+						if (inMessage.size() && YTextBox->Text != "")
 						{
 							int y = exp_module(g, x, p);
 							if (rbDoEncryption->Checked)

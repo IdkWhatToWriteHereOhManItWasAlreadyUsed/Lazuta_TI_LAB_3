@@ -33,7 +33,8 @@ std::vector<uint8_t> EncryptMessage(const std::vector<uint8_t>& message, int p, 
     int index = 0;
     for (uint8_t m : message)
     {
-        int k = dis(gen);
+      //  int k = dis(gen);
+        int k = 41;
         int a = pow_mod(g, k, p);
         int yk = pow_mod(y, k, p);
         int b = (yk * m) % p;
